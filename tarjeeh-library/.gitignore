@@ -1,0 +1,4 @@
+keys.env
+library/
+sync-failures.json
+pycache/
