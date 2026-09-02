@@ -1,0 +1,162 @@
+{
+  "_comment": "Search terms per industry. Terms are tuned for UAE trade and service work: workers doing the task, not lifestyle shoots. Add terms as you find gaps; the builder dedupes automatically.",
+
+  "cleaning": [
+    "cleaner mopping office floor",
+    "commercial cleaning crew uniform",
+    "housekeeping staff vacuuming",
+    "window cleaner high rise",
+    "deep cleaning kitchen gloves",
+    "sanitising office desk disinfectant",
+    "carpet cleaning machine",
+    "cleaning trolley corridor"
+  ],
+  "facilities-management": [
+    "facility technician inspecting building",
+    "building maintenance worker checklist",
+    "hvac technician rooftop unit",
+    "electrical panel inspection technician",
+    "plumber pipe repair commercial",
+    "security guard building lobby",
+    "janitorial staff commercial building"
+  ],
+  "maintenance": [
+    "handyman repairing air conditioner",
+    "electrician wiring junction box",
+    "plumber under sink repair",
+    "technician toolbox apartment repair",
+    "ac servicing split unit",
+    "painter painting interior wall roller"
+  ],
+  "construction": [
+    "construction workers hard hat site",
+    "steel reinforcement rebar workers",
+    "concrete pouring construction crew",
+    "site engineer blueprint hard hat",
+    "scaffolding workers building facade",
+    "excavator foundation work",
+    "surveyor total station construction"
+  ],
+  "trading-wholesale": [
+    "warehouse worker forklift pallets",
+    "industrial spare parts shelves",
+    "bearings machine parts close up",
+    "warehouse inventory scanning barcode",
+    "shipping containers logistics yard",
+    "hardware store shelves tools",
+    "industrial valves pipes fittings"
+  ],
+  "clinic-healthcare": [
+    "doctor consultation patient clinic",
+    "dental clinic treatment chair",
+    "nurse taking blood pressure",
+    "medical laboratory technician microscope",
+    "physiotherapy session treatment",
+    "clinic reception desk waiting area",
+    "dermatology skin examination"
+  ],
+  "salon-beauty": [
+    "hair stylist cutting hair salon",
+    "manicure nail technician hands",
+    "facial treatment beauty salon",
+    "salon interior styling chairs",
+    "hair colouring salon professional",
+    "spa massage treatment room"
+  ],
+  "automotive": [
+    "car mechanic engine bay repair",
+    "auto garage vehicle lift",
+    "tyre change workshop technician",
+    "car detailing polishing paint",
+    "vehicle diagnostics scanner mechanic",
+    "auto body panel repair workshop"
+  ],
+  "landscaping": [
+    "gardener trimming hedge",
+    "landscaping crew laying turf",
+    "irrigation system installation garden",
+    "tree pruning worker",
+    "landscape garden villa design"
+  ],
+  "pest-control": [
+    "pest control technician spraying",
+    "exterminator uniform equipment",
+    "termite treatment technician",
+    "fumigation equipment worker"
+  ],
+  "moving-logistics": [
+    "movers carrying furniture boxes",
+    "moving truck loading household",
+    "packing boxes bubble wrap movers",
+    "delivery driver van parcels",
+    "warehouse loading dock truck"
+  ],
+  "interior-fitout": [
+    "interior fitout carpenter installing",
+    "gypsum ceiling installation worker",
+    "flooring installation tiles worker",
+    "joinery workshop carpenter",
+    "office interior fitout construction"
+  ],
+  "technology-it": [
+    "network engineer server rack",
+    "it technician structured cabling",
+    "cctv camera installation technician",
+    "data centre server maintenance",
+    "developer working code screens"
+  ],
+  "printing-signage": [
+    "large format printer operator",
+    "signage installation workers",
+    "vinyl cutting plotter workshop",
+    "print shop offset machine operator"
+  ],
+  "food-restaurant": [
+    "chef cooking commercial kitchen",
+    "restaurant interior dining",
+    "catering staff serving buffet",
+    "barista coffee espresso machine",
+    "bakery baker bread oven"
+  ],
+  "real-estate": [
+    "apartment tower exterior modern",
+    "villa exterior residential",
+    "modern office building facade",
+    "living room interior apartment",
+    "handing over keys property"
+  ],
+  "education-training": [
+    "classroom students teacher",
+    "training session workshop adults",
+    "tutor teaching student desk",
+    "laboratory practical students"
+  ],
+  "laundry": [
+    "commercial laundry machines",
+    "ironing shirts laundry worker",
+    "dry cleaning garments rack",
+    "laundry folding clothes worker"
+  ],
+  "safety-fire": [
+    "fire extinguisher inspection technician",
+    "fire alarm system installation",
+    "safety officer ppe site inspection",
+    "fire suppression sprinkler system"
+  ],
+  "manufacturing": [
+    "cnc machine operator workshop",
+    "welding worker sparks fabrication",
+    "factory production line workers",
+    "metal fabrication workshop grinder",
+    "quality inspection factory caliper"
+  ],
+
+  "_environment": [
+    "dubai apartment tower exterior",
+    "modern office interior empty",
+    "warehouse interior racking empty",
+    "industrial workshop interior",
+    "villa exterior middle east",
+    "commercial building lobby interior"
+  ]
+}
