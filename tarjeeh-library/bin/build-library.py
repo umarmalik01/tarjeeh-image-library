@@ -13,8 +13,8 @@ can rebuild the identical library from it.
 Usage:
     export PEXELS_API_KEY=...        # https://www.pexels.com/api/key/
     export PIXABAY_API_KEY=...       # https://pixabay.com/api/docs/
-    python3 bin/build-library.py --per-industry 40
-    python3 bin/build-library.py --industry cleaning --per-industry 60
+    python3 build-library.py --per-industry 40
+    python3 build-library.py --industry cleaning --per-industry 60
 """
 
 import argparse
@@ -27,8 +27,8 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-CONFIG = ROOT / "config" / "industries.json"
+ROOT = Path(__file__).resolve().parent
+CONFIG = ROOT / "industries.json"
 MANIFEST = ROOT / "library-manifest.json"
 
 # ---------------------------------------------------------------------------
@@ -42,6 +42,14 @@ CAPTION_BLOCKLIST = [
     "sexy", "bikini", "fashion", "posing", "smiling at camera", "selfie",
     "happy family", "romantic", "couple", "vacation", "holiday", "party",
     "yoga", "fitness", "workout", "celebrating", "girl", "boy",
+    # Added after the first real seeding run: 16 of 80 photos failed the
+    # worker test using wording the original list did not know.
+    "posing", "poses", "shows", "showing off", "renovating her",
+    "renovating his", "diy", "do it yourself", "homeowner",
+    "hotel", "luggage", "room service", "guest room", "suite",
+    "learning session", "training session", "seminar", "classroom",
+    "fun and", "relaxing", "resting", "leisure",
+    "black and white", "greyscale", "grayscale", "monochrome",
 ]
 
 # Rejected regardless of caption: AI slop and illustration masquerading as photo.
@@ -52,8 +60,20 @@ MIN_WIDTH = 1600
 MIN_HEIGHT = 900
 
 
+# Pexels' edge rejects the default Python-urllib User-Agent with a 403 that
+# looks exactly like a bad API key. Always send a browser UA.
+BASE_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/124.0 Safari/537.36",
+    "Accept": "application/json",
+}
+
+
 def http_json(url, headers=None, timeout=25):
-    req = urllib.request.Request(url, headers=headers or {})
+    h = dict(BASE_HEADERS)
+    h.update(headers or {})
+    req = urllib.request.Request(url, headers=h)
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return json.loads(r.read().decode("utf-8"))
 
@@ -212,33 +232,49 @@ def build(industries, per_industry, only=None, add=None):
 
         print(f"\n[{industry}] have {len(existing)}, target {target}")
 
-        for query in queries:
-            if len(collected) >= target:
-                break
-            print(f"  ? {query}")
-            for name, fn, delay in SOURCES:
-                if len(collected) >= target:
-                    break
-                results = fn(query)
-                added = 0
-                for r in results:
-                    if len(collected) >= target:
-                        break
-                    kdup = (r["source"], r["source_id"])
-                    if kdup in seen or r["download_url"] in seen_urls:
-                        continue
-                    if not r["download_url"]:
-                        continue
-                    r["query"] = query
-                    r["industry"] = industry
-                    r["added"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
-                    r["filename"] = f"{r['source']}-{r['source_id']}.jpg"
-                    seen.add(kdup)
-                    seen_urls.add(r["download_url"])
-                    collected.append(r)
-                    added += 1
-                print(f"      {name}: +{added} (total {len(collected)})")
-                time.sleep(delay)
+        # A single productive term will otherwise fill the whole quota -- the
+        # first cleaning run produced 40 photos of mopping and never reached
+        # the other seven terms. Useless, because every service slot needs its
+        # own matching photograph. Cap each term to a fair share on pass one,
+        # then lift the cap on pass two to top up any shortfall.
+        need = max(0, target - len(collected))
+        fair_share = max(3, -(-need // max(1, len(queries)))) if need else 0
+
+        for pass_no, cap in enumerate([fair_share, None], start=1):
+          if len(collected) >= target:
+              break
+          if pass_no == 2:
+              print(f"  -- pass 2: lifting per-term cap to reach {target}")
+          for query in queries:
+              if len(collected) >= target:
+                  break
+              print(f"  ? {query}")
+              for name, fn, delay in SOURCES:
+                  if len(collected) >= target:
+                      break
+                  results = fn(query)
+                  added = 0
+                  term_cap = cap
+                  for r in results:
+                      if len(collected) >= target:
+                          break
+                      if term_cap is not None and added >= term_cap:
+                          break
+                      kdup = (r["source"], r["source_id"])
+                      if kdup in seen or r["download_url"] in seen_urls:
+                          continue
+                      if not r["download_url"]:
+                          continue
+                      r["query"] = query
+                      r["industry"] = industry
+                      r["added"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+                      r["filename"] = f"{r['source']}-{r['source_id']}.jpg"
+                      seen.add(kdup)
+                      seen_urls.add(r["download_url"])
+                      collected.append(r)
+                      added += 1
+                  print(f"      {name}: +{added} (total {len(collected)})")
+                  time.sleep(delay)
 
         manifest["industries"][industry] = collected
 
